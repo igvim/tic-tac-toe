@@ -12,19 +12,21 @@ function gameBoard() {
 
   const getBoard = () => board;
 
-  const render = () => {
-    board.forEach((row) => {
-      row.forEach((column) => {
-        const space = document.querySelector('.board');
-        const square = document.createElement('div');
-        // square.textContent = board[row][column];
-        square.classList.add('square');
-        space.appendChild(square);
-      })
-    })
-  }
-
-  return { getBoard, render }
+  return { getBoard }
 };
 
-gameBoard().render();
+const render = () => {
+  const board = gameBoard().getBoard();
+  board.forEach((row, i) => {
+    row.forEach((column, j) => {
+      const space = document.querySelector('.board');
+      const square = document.createElement('div');
+      const cell = board[i][j];
+      square.textContent = cell;
+      square.classList.add('square');
+      space.appendChild(square);
+    })
+  })
+}
+
+render()
