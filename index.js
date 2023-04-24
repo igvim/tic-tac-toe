@@ -8,5 +8,20 @@ function gameBoard() {
     }
   }
 
-  return { board }
+  const getBoard = () => board;
+
+  const render = () => {
+    board.forEach((row) => {
+      row.forEach(() => {
+        const board = document.querySelector('.board');
+        const square = document.createElement('div');
+        square.classList.add('square');
+        board.appendChild(square);
+      })
+    })
+  }
+
+  return { getBoard, render }
 };
+
+gameBoard().render();
