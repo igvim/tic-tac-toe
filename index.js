@@ -1,4 +1,4 @@
-function gameBoard() {
+const gameBoard = (() => {
   const board = [];
   const row = 3;
   const column = 3;
@@ -6,17 +6,17 @@ function gameBoard() {
   for (i = 0; i < row; i++){
     board[i] = [];
     for (j = 0; j < column; j++){
-      board[i].push('O');
+      board[i].push([]);
     }
   }
 
   const getBoard = () => board;
 
   return { getBoard }
-};
+})();
 
 const render = () => {
-  const board = gameBoard().getBoard();
+  const board = gameBoard.getBoard();
   board.forEach((row, i) => {
     row.forEach((column, j) => {
       const space = document.querySelector('.board');
@@ -27,6 +27,9 @@ const render = () => {
       space.appendChild(square);
     })
   })
-}
+};
 
-render()
+const mark = (row, column) => {
+  const board = gameBoard.getBoard();
+  board[row][column] = 'X';
+};
