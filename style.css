@@ -1,5 +1,10 @@
+.board {
+  display: grid;
+  height: 400px;
+  width: 400px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .square {
   border: solid black;
-  width: 100px;
-  height: 100px;
 }
