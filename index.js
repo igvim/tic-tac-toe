@@ -39,7 +39,14 @@ const DOMController = (() => {
   return { render }
 })();
 
-const mark = (row, column) => {
+const markBoard = (row, column, playerMark) => {
   const board = gameBoard.getBoard();
-  board[row][column] = 'X';
+  board[row][column] = playerMark;
 };
+
+const Player = (mark) => {
+  return { mark };
+}
+
+const PlayerX = Player('X');
+const PlayerO = Player('O');
