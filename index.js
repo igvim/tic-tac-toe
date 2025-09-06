@@ -19,14 +19,15 @@ const DOMController = (() => {
   const board = gameBoard.getBoard();
 
   const render = () => {
+    const boardSpace = document.querySelector('.board');
+    boardSpace.innerHTML = '';
     board.forEach((row, i) => {
       row.forEach((column, j) => {
-        const space = document.querySelector('.board');
         const square = document.createElement('div');
         const cell = board[i][j];
         square.textContent = cell;
         square.classList.add('square');
-        space.appendChild(square);
+        boardSpace.appendChild(square);
       })
     })
   };
