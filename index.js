@@ -41,7 +41,9 @@ const DOMController = (() => {
 
 const markBoard = (row, column, playerMark) => {
   const board = gameBoard.getBoard();
-  board[row][column] = playerMark;
+  board[row][column] == '' ? 
+  board[row][column] = playerMark : 
+  console.log('Square already played, choose another');
 };
 
 const Player = (mark) => {
