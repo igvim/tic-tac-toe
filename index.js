@@ -1,18 +1,22 @@
 const gameBoard = (() => {
-  const board = [];
-  const row = 3;
-  const column = 3;
 
-  for (i = 0; i < row; i++){
-    board[i] = [];
-    for (j = 0; j < column; j++){
-      board[i].push([]);
+  const board = [];
+
+  const newBoard = () => {
+    const row = 3;
+    const column = 3;
+    
+    for (i = 0; i < row; i++){
+      board[i] = [];
+      for (j = 0; j < column; j++){
+        board[i].push([]);
+      }
     }
   }
-
+  
   const getBoard = () => board;
 
-  return { getBoard }
+  return { getBoard, newBoard }
 })();
 
 const DOMController = (() => {
