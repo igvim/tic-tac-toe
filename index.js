@@ -2,17 +2,14 @@ const gameBoard = (() => {
 
   const board = [];
 
-  const newBoard = () => {
-    const row = 3;
-    const column = 3;
-    
+  const newBoard = (row, column) => { 
     for (i = 0; i < row; i++){
       board[i] = [];
       for (j = 0; j < column; j++){
         board[i].push([]);
-      }
-    }
-  }
+      };
+    };
+  };
   
   const getBoard = () => board;
 
@@ -20,9 +17,18 @@ const gameBoard = (() => {
     const board = gameBoard.getBoard();
     const cell = board[row][column];
     return cell;
+  };
+
+  const winCheck = () => {
+    const board = gameBoard.getBoard();
+    for (i = 0; i < board.length; i++){
+      for (j = 0; j < board.length; j++){
+        console.log('hi');
+      };
+    };
   }
 
-  return { getBoard, newBoard, getCell }
+  return { getBoard, newBoard, getCell, winCheck }
 })();
 
 const Player = (mark) => {
