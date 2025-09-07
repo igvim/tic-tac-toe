@@ -36,7 +36,7 @@ const Player = (mark) => {
 
   const winArray = [mark, mark, mark];
 
-  return { mark, winArray, play };
+  return { winArray, play };
 };
 
 const PlayerX = Player('X');
