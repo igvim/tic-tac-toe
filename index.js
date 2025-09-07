@@ -20,13 +20,16 @@ const gameBoard = (() => {
 })();
 
 const Player = (mark) => {
+
   const play = (row, column) => {
     const board = gameBoard.getBoard();
     board[row][column] == '' ? 
     board[row][column] = mark : 
     console.log('Square already played, choose another');
   };
+
   const winArray = [mark, mark, mark];
+  
   return { mark, winArray, play };
 }
 
