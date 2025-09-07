@@ -47,7 +47,8 @@ const markBoard = (row, column, playerMark) => {
 };
 
 const Player = (mark) => {
-  return { mark };
+  const winArray = [mark, mark, mark];
+  return { mark, winArray };
 }
 
 const PlayerX = Player('X');
