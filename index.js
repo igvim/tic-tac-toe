@@ -16,7 +16,13 @@ const gameBoard = (() => {
   
   const getBoard = () => board;
 
-  return { getBoard, newBoard }
+  const getCell = (row, column) => {
+    const board = gameBoard.getBoard();
+    const cell = board[row][column];
+    return cell;
+  }
+
+  return { getBoard, newBoard, getCell }
 })();
 
 const Player = (mark) => {
@@ -29,9 +35,9 @@ const Player = (mark) => {
   };
 
   const winArray = [mark, mark, mark];
-  
+
   return { mark, winArray, play };
-}
+};
 
 const PlayerX = Player('X');
 const PlayerO = Player('O');
