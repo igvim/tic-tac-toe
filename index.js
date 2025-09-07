@@ -11,7 +11,12 @@ const gameBoard = (() => {
     };
   };
   
-  const getBoard = () => board;
+  const getBoard = () => {
+    if (board.length == 0) {
+      newBoard(3,3);
+    };
+    return board;
+  }
 
   const winCheck = () => {
 
