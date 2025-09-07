@@ -19,6 +19,20 @@ const gameBoard = (() => {
   return { getBoard, newBoard }
 })();
 
+const Player = (mark) => {
+  const play = (row, column) => {
+    const board = gameBoard.getBoard();
+    board[row][column] == '' ? 
+    board[row][column] = mark : 
+    console.log('Square already played, choose another');
+  };
+  const winArray = [mark, mark, mark];
+  return { mark, winArray, play };
+}
+
+const PlayerX = Player('X');
+const PlayerO = Player('O');
+
 const DOMController = (() => {
   const board = gameBoard.getBoard();
 
@@ -38,18 +52,3 @@ const DOMController = (() => {
 
   return { render }
 })();
-
-const markBoard = (row, column, playerMark) => {
-  const board = gameBoard.getBoard();
-  board[row][column] == '' ? 
-  board[row][column] = playerMark : 
-  console.log('Square already played, choose another');
-};
-
-const Player = (mark) => {
-  const winArray = [mark, mark, mark];
-  return { mark, winArray };
-}
-
-const PlayerX = Player('X');
-const PlayerO = Player('O');
