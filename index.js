@@ -29,21 +29,21 @@ const gameBoard = (() => {
     let cell = getCell(1,1);
 
     const winMessage = (winCell) => { 
-      winCell == PlayerX.mark ? console.log('X wins!') : console.log('O wins!');
+      winCell === PlayerX.mark ? console.log('X wins!') : console.log('O wins!');
     };
 
     switch (cell) {
       case getCell(0,0):
-        if (cell == getCell(2,2)) winMessage(cell);
+        if (cell === getCell(2,2)) winMessage(cell);
         break;
       case getCell(0,1):
-        if (cell == getCell(2,1)) winMessage(cell);
+        if (cell === getCell(2,1)) winMessage(cell);
         break;
       case getCell(0,2):
-        if (cell == getCell(2,0)) winMessage(cell);
+        if (cell === getCell(2,0)) winMessage(cell);
         break;
       case getCell(1,0):
-        if (cell == getCell(1,2)) winMessage(cell);
+        if (cell === getCell(1,2)) winMessage(cell);
         break;
       default:
         cell = getCell(0,0);
@@ -51,10 +51,10 @@ const gameBoard = (() => {
 
     switch (cell) {
       case getCell(0,1):
-        if (cell == getCell(0,2)) winMessage(cell);
+        if (cell === getCell(0,2)) winMessage(cell);
         break;
       case getCell(1,0):
-        if (cell == getCell(2,0)) winMessage(cell);
+        if (cell === getCell(2,0)) winMessage(cell);
         break;
       default:
         cell = getCell(2,2);
@@ -62,10 +62,10 @@ const gameBoard = (() => {
 
     switch (cell) {
       case getCell(0,2):
-        if (cell == getCell(1,2)) winMessage(cell);
+        if (cell === getCell(1,2)) winMessage(cell);
         break;
       case getCell(2,0):
-        if (cell == getCell(2,1)) winMessage(cell);
+        if (cell === getCell(2,1)) winMessage(cell);
         break;
       default:
         console.log('no winner');
@@ -86,7 +86,7 @@ const Player = (mark) => {
 
   const play = (row, column) => {
     const board = gameBoard.getBoard();
-    board[row][column] == '' ? 
+    board[row][column] === '' ? 
     board[row][column] = mark : 
     console.log('Square already played, choose another');
   };
@@ -96,6 +96,35 @@ const Player = (mark) => {
 
 const PlayerX = Player('X');
 const PlayerO = Player('O');
+
+const GameController = (() => {
+
+  let turnCount = 0;
+
+  const resetTurnCount = () => {
+    turnCount = 0;
+  }
+
+  const turn = (i, j) => {
+
+    const board = gameBoard.getBoard();
+
+    turnCount % 2 == 0 ? PlayerX.play(i,j) : PlayerO.play(i,j);
+    turnCount++;
+
+    if (turnCount > 4) {
+      gameBoard.winCheck();
+      // if winCheck true resetTurnCount
+    };
+
+    if (turnCount === board.length^2) gameBoard.tieCheck();
+    // resetTurnCount?
+    
+    return board;
+  };
+
+  return { turn }
+})();
 
 const DOMController = (() => {
   const board = gameBoard.getBoard();
