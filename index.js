@@ -6,7 +6,7 @@ const gameBoard = (() => {
     for (i = 0; i < row; i++){
       board[i] = [];
       for (j = 0; j < column; j++){
-        board[i].push([]);
+        board[i].push('');
       };
     };
   };
@@ -72,7 +72,14 @@ const gameBoard = (() => {
     }
   };
 
-  return { getBoard, newBoard, winCheck }
+  const tieCheck = () => {
+    const board = gameBoard.getBoard();
+    const noMoves = board.some((row) => row.some((cell) => cell === ''));
+    const isTie = !noMoves;
+    return isTie;
+  }
+
+  return { getBoard, newBoard, winCheck, tieCheck }
 })();
 
 const Player = (mark) => {
