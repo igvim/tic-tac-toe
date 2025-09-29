@@ -6,14 +6,14 @@ const gameBoard = (() => {
       board[i] = [];
       for (j = 0; j < column; j++) {
         board[i].push("");
-      }
-    }
+      };
+    };
   };
 
   const getBoard = () => {
     if (board.length == 0) {
       newBoard(3, 3);
-    }
+    };
     return board;
   };
 
@@ -32,7 +32,7 @@ const gameBoard = (() => {
         case PlayerO.mark:
           console.log("O wins!");
           break;
-      }
+      };
     };
 
     const checkOne = () => {
@@ -40,20 +40,28 @@ const gameBoard = (() => {
 
       switch (cell) {
         case getCell(0, 0):
-          if (cell === getCell(2, 2)) winMessage(cell);
-          return true;
+          if (cell === getCell(2, 2)) {
+            winMessage(cell);
+            return true;
+          };
         case getCell(0, 1):
-          if (cell === getCell(2, 1)) winMessage(cell);
-          return true;
+          if (cell === getCell(2, 1)) {
+            winMessage(cell);
+            return true;
+          };
         case getCell(0, 2):
-          if (cell === getCell(2, 0)) winMessage(cell);
-          return true;
+          if (cell === getCell(2, 0)) {
+            winMessage(cell);
+            return true;
+          };
         case getCell(1, 0):
-          if (cell === getCell(1, 2)) winMessage(cell);
-          return true;
+          if (cell === getCell(1, 2)) {
+            winMessage(cell);
+            return true;
+          };
         default:
           return false;
-      }
+      };
     };
 
     const checkTwo = () => {
@@ -61,14 +69,18 @@ const gameBoard = (() => {
 
       switch (cell) {
         case getCell(0, 1):
-          if (cell === getCell(0, 2)) winMessage(cell);
-          return true;
+          if (cell === getCell(0, 2)) {
+            winMessage(cell);
+            return true;
+          };
         case getCell(1, 0):
-          if (cell === getCell(2, 0)) winMessage(cell);
-          return true;
+          if (cell === getCell(2, 0)) {
+            winMessage(cell);
+            return true;
+          };
         default:
           return false;
-      }
+      };
     };
 
     const checkThree = () => {
@@ -76,23 +88,27 @@ const gameBoard = (() => {
 
       switch (cell) {
         case getCell(0, 2):
-          if (cell === getCell(1, 2)) winMessage(cell);
-          return true;
+          if (cell === getCell(1, 2)) {
+            winMessage(cell);
+            return true;
+          };
         case getCell(2, 0):
-          if (cell === getCell(2, 1)) winMessage(cell);
-          return true;
+          if (cell === getCell(2, 1)) {
+            winMessage(cell);
+            return true;
+          };
         default:
           return false;
-      }
+      };
     };
 
     if (!checkOne()) {
       if (!checkTwo()) {
         if (!checkThree()) {
-          console.log("no winner");
-        }
-      }
-    }
+          console.log('no winner')
+        };
+      };
+    };
   };
 
   const tieCheck = () => {
@@ -143,7 +159,17 @@ const GameController = (() => {
     return board;
   };
 
-  return { turn };
+  const checkTest = () => {
+    board = gameBoard.getBoard();
+    GameController.turn(0,2);
+    GameController.turn(1,1);
+    GameController.turn(0,1);
+    GameController.turn(0,0);
+    GameController.turn(2,2);
+    return board;
+  }
+
+  return { turn, checkTest };
 })();
 
 const DOMController = (() => {
