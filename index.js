@@ -19,7 +19,6 @@ const gameBoard = (() => {
 
   const winCheck = () => {
     const getCell = (row, column) => {
-      const board = gameBoard.getBoard();
       const cell = board[row][column];
       return cell;
     };
@@ -112,7 +111,6 @@ const gameBoard = (() => {
   };
 
   const tieCheck = () => {
-    const board = gameBoard.getBoard();
     const noMoves = board.some((row) => row.some((cell) => cell === ""));
     const isTie = !noMoves;
     return isTie;
@@ -138,7 +136,14 @@ const PlayerO = Player("O");
 const GameController = (() => {
   let turnCount = 0;
 
-  const resetTurnCount = () => {
+  const getTurn = () => turnCount;
+
+  const turnTest = () => {
+    let turnCount = getTurn();
+    turnCount++;
+  }
+
+  const resetGame = () => {
     turnCount = 0;
   };
 
@@ -149,13 +154,11 @@ const GameController = (() => {
     turnCount++;
 
     if (turnCount > 4) {
-      gameBoard.winCheck();
-      // if winCheck true resetTurnCount
+      const isWin = gameBoard.winCheck();
+      if (isWin) resetGame();
     }
 
     if ((turnCount === board.length) ^ 2) gameBoard.tieCheck();
-    // resetTurnCount?
-
     return board;
   };
 
@@ -169,7 +172,7 @@ const GameController = (() => {
     return board;
   }
 
-  return { turn, checkTest };
+  return { turn, checkTest, turnTest, getTurn, turnCount };
 })();
 
 const DOMController = (() => {
