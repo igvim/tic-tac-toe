@@ -8,14 +8,10 @@ const gameBoard = (() => {
         board[i].push("");
       };
     };
-  };
-
-  const getBoard = () => {
-    if (board.length == 0) {
-      newBoard(3, 3);
-    };
     return board;
   };
+
+  const getBoard = () => board;
 
   const winCheck = () => {
     const getCell = (row, column) => {
@@ -26,12 +22,13 @@ const gameBoard = (() => {
     const winMessage = (winCell) => {
       switch (winCell) {
         case PlayerX.mark:
-          console.log("X wins!");
+          console.log("X wins! New game:");
           break;
         case PlayerO.mark:
-          console.log("O wins!");
+          console.log("O wins! New game:");
           break;
       };
+      GameController.resetGame();
     };
 
     const checkOne = () => {
@@ -138,20 +135,16 @@ const GameController = (() => {
 
   const getTurn = () => turnCount;
 
-  const turnTest = () => {
-    let turnCount = getTurn();
-    turnCount++;
-  }
-
   const resetGame = () => {
     turnCount = 0;
+    return gameBoard.newBoard(3,3);
   };
 
   const turn = (i, j) => {
     const board = gameBoard.getBoard();
 
     turnCount % 2 == 0 ? PlayerX.play(i, j) : PlayerO.play(i, j);
-    turnCount++;
+    ++turnCount;
 
     if (turnCount > 4) {
       const isWin = gameBoard.winCheck();
@@ -163,16 +156,16 @@ const GameController = (() => {
   };
 
   const checkTest = () => {
-    board = gameBoard.getBoard();
-    GameController.turn(0,2);
-    GameController.turn(1,1);
-    GameController.turn(0,1);
-    GameController.turn(0,0);
-    GameController.turn(2,2);
+    board = gameBoard.newBoard(3,3);
+    turn(0,0);
+    turn(1,0);
+    turn(1,1);
+    turn(0,1);
+    turn(2,2);
     return board;
   }
 
-  return { turn, checkTest, turnTest, getTurn, turnCount };
+  return { turn, checkTest, resetGame, getTurn };
 })();
 
 const DOMController = (() => {
