@@ -38,90 +38,88 @@ const PlayerO = Player("O");
 const GameController = (() => {
   let turnCount = 0;
 
-  const getTurn = () => turnCount;
-
-  const resetGame = () => {
+  const newGame = () => {
     turnCount = 0;
     gameBoard.newBoard(3, 3);
+    console.log("new game");
+  };
+
+  const winMessage = (winCell) => {
+    switch (winCell) {
+      case PlayerX.mark:
+        console.log("X wins!");
+        break;
+      case PlayerO.mark:
+        console.log("O wins!");
+        break;
+    }
   };
 
   const winCheck = () => {
-    const winMessage = (winCell) => {
-      switch (winCell) {
-        case PlayerX.mark:
-          console.log("X wins! New game:");
-          break;
-        case PlayerO.mark:
-          console.log("O wins! New game:");
-          break;
-      }
-    };
-
     const checkOne = () => {
       const cell = gameBoard.getCell(1, 1);
       if (!cell) return false;
-      switch (cell) {
-        case gameBoard.getCell(0, 0):
-          if (cell === gameBoard.getCell(2, 2)) {
-            winMessage(cell);
-            return true;
-          }
-        case gameBoard.getCell(0, 1):
-          if (cell === gameBoard.getCell(2, 1)) {
-            winMessage(cell);
-            return true;
-          }
-        case gameBoard.getCell(0, 2):
-          if (cell === gameBoard.getCell(2, 0)) {
-            winMessage(cell);
-            return true;
-          }
-        case gameBoard.getCell(1, 0):
-          if (cell === gameBoard.getCell(1, 2)) {
-            winMessage(cell);
-            return true;
-          }
-        default:
-          return false;
+      if (cell === gameBoard.getCell(0, 0)) {
+        if (cell === gameBoard.getCell(2, 2)) {
+          winMessage(cell);
+          return true;
+        }
       }
+      if (cell === gameBoard.getCell(0, 1)) {
+        if (cell === gameBoard.getCell(2, 1)) {
+          winMessage(cell);
+          return true;
+        }
+      }
+      if (cell === gameBoard.getCell(0, 2)) {
+        if (cell === gameBoard.getCell(2, 0)) {
+          winMessage(cell);
+          return true;
+        }
+      }
+      if (cell === gameBoard.getCell(1, 0)) {
+        if (cell === gameBoard.getCell(1, 2)) {
+          winMessage(cell);
+          return true;
+        }
+      }
+      return false;
     };
 
     const checkTwo = () => {
       const cell = gameBoard.getCell(0, 0);
       if (!cell) return false;
-      switch (cell) {
-        case gameBoard.getCell(0, 1):
-          if (cell === gameBoard.getCell(0, 2)) {
-            winMessage(cell);
-            return true;
-          }
-        case gameBoard.getCell(1, 0):
-          if (cell === gameBoard.getCell(2, 0)) {
-            winMessage(cell);
-            return true;
-          }
-        default:
-          return false;
+      if (cell === gameBoard.getCell(0, 1)) {
+        if (cell === gameBoard.getCell(0, 2)) {
+          winMessage(cell);
+          return true;
+        }
       }
+      if (cell === gameBoard.getCell(1, 0)) {
+        if (cell === gameBoard.getCell(2, 0)) {
+          winMessage(cell);
+          return true;
+        }
+      }
+      return false;
     };
 
     const checkThree = () => {
       const cell = gameBoard.getCell(2, 2);
       if (!cell) return false;
-      switch (cell) {
-        case gameBoard.getCell(0, 2):
-          if (cell === gameBoard.getCell(1, 2)) {
-            winMessage(cell);
-            return true;
-          }
-        case gameBoard.getCell(2, 0):
-          if (cell === gameBoard.getCell(2, 1)) {
-            winMessage(cell);
-            return true;
-          }
-        default:
-          return false;
+      if (cell === gameBoard.getCell(0, 2)) {
+        if (cell === gameBoard.getCell(1, 2)) {
+          winMessage(cell);
+          return true;
+        }
       }
+      if (cell === gameBoard.getCell(2, 0)) {
+        if (cell === gameBoard.getCell(2, 1)) {
+          winMessage(cell);
+          return true;
+        }
+      }
+      return false;
     };
 
     if (!checkOne()) {
@@ -131,10 +129,11 @@ const GameController = (() => {
           return false;
         }
       }
-    }
+    } else return true;
   };
 
   const tieCheck = () => {
+    const board = gameBoard.getBoard();
     const noMoves = board.some((row) => row.some((cell) => cell === ""));
     const isTie = !noMoves;
     return isTie;
@@ -147,7 +146,7 @@ const GameController = (() => {
     ++turnCount;
 
     if (turnCount > 4) {
-      winCheck();
+      if (winCheck()) newGame();
     }
 
     if (turnCount === board.length ** 2) {
@@ -155,21 +154,33 @@ const GameController = (() => {
     }
   };
 
-  const checkTest = () => {
-    board = gameBoard.newBoard(3, 3);
+  const winTest = () => {
+    newGame();
+    const board = gameBoard.getBoard();
     turn(0, 0);
     turn(0, 2);
-    turn(0, 1);
     turn(1, 1);
-    turn(1, 2);
     turn(1, 0);
-    turn(2, 0);
     turn(2, 2);
-    turn(2, 1);
     return board;
   };
 
-  return { turn, checkTest, resetGame, getTurn };
+  const tieTest = () => {
+    newGame();
+    const board = gameBoard.getBoard();
+    turn(0, 0);
+    turn(0, 2);
+    turn(0, 1);
+    turn(1, 0);
+    turn(1, 2);
+    turn(1, 1);
+    turn(2, 1);
+    turn(2, 2);
+    turn(2, 0);
+    return board;
+  };
+
+  return { turn, winTest, tieTest, newGame };
 })();
 
 const DOMController = (() => {
