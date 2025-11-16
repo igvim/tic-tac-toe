@@ -21,22 +21,23 @@ const gameBoard = (() => {
   return { getBoard, newBoard, getCell };
 })();
 
-const Player = (mark) => {
-  const play = (row, column) => {
-    const board = gameBoard.getBoard();
-    board[row][column] === ""
-      ? (board[row][column] = mark)
-      : console.log("Square already played, choose another");
-  };
-
-  return { mark, play };
-};
-
-const PlayerX = Player("X");
-const PlayerO = Player("O");
-
 const GameController = (() => {
   let turnCount = 0;
+
+  const Player = (mark) => {
+    const play = (row, column) => {
+      const board = gameBoard.getBoard();
+      if (board[row][column] === "") {
+        board[row][column] = mark;
+        ++turnCount;
+      }
+    };
+
+    return { mark, play };
+  };
+
+  const PlayerX = Player("X");
+  const PlayerO = Player("O");
 
   const newGame = () => {
     turnCount = 0;
@@ -143,7 +144,6 @@ const GameController = (() => {
     const board = gameBoard.getBoard();
 
     turnCount % 2 == 0 ? PlayerX.play(i, j) : PlayerO.play(i, j);
-    ++turnCount;
 
     if (turnCount > 4) {
       if (winCheck()) newGame();
