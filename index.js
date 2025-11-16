@@ -180,25 +180,28 @@ const GameController = (() => {
     return board;
   };
 
-  return { turn, winTest, tieTest, newGame };
+  return { turn, winTest, tieTest, newGame, turnCount };
 })();
 
 const DOMController = (() => {
   const board = gameBoard.getBoard();
 
-  const render = () => {
+  const renderBoard = () => {
     const boardSpace = document.querySelector(".board");
     boardSpace.innerHTML = "";
     board.forEach((row, i) => {
       row.forEach((column, j) => {
         const square = document.createElement("div");
-        const cell = board[i][j];
-        square.textContent = cell;
         square.classList.add("square");
+        square.addEventListener("click", (e) => {
+          GameController.turn(i, j);
+          const cell = board[i][j];
+          square.textContent = cell;
+        });
         boardSpace.appendChild(square);
       });
     });
   };
 
-  return { render };
+  return { renderBoard };
 })();
