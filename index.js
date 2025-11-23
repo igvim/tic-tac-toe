@@ -111,7 +111,8 @@ const GameController = (() => {
           return false;
         }
       }
-    } else return true;
+    }
+    return true;
   };
 
   const tieCheck = () => {
