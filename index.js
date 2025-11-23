@@ -193,9 +193,9 @@ const DOMController = (() => {
         const square = document.createElement("div");
         square.classList.add("square");
         square.addEventListener("click", (e) => {
-          let statusObj = GameController.turn(i, j);
-          square.textContent = statusObj.lastCell;
-          gameStatus(statusObj.message);
+          let status = GameController.turn(i, j);
+          square.textContent = status.lastCell;
+          gameStatus(status.message);
         });
         boardSpace.appendChild(square);
       });
