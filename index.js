@@ -146,7 +146,7 @@ const GameController = (() => {
     turnCount % 2 == 0 ? PlayerX.play(i, j) : PlayerO.play(i, j);
 
     if (turnCount > 4) {
-      if (winCheck()) newGame();
+      winCheck();
     }
 
     if (turnCount === board.length ** 2) {
@@ -205,3 +205,6 @@ const DOMController = (() => {
 
   return { renderBoard };
 })();
+
+gameBoard.newBoard(3, 3);
+DOMController.renderBoard();
