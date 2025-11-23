@@ -23,6 +23,7 @@ const gameBoard = (() => {
 
 const GameController = (() => {
   let turnCount = 0;
+  let message = "";
 
   const Player = (mark) => {
     const play = (row, column) => {
@@ -132,16 +133,19 @@ const GameController = (() => {
     turnCount % 2 == 0 ? PlayerX.play(i, j) : PlayerO.play(i, j);
 
     const lastCell = board[i][j];
-    /*
+
     if (turnCount > 4) {
-      if (winCheck()) winMsg = winMessage(lastCell);
-    }
-*/
-    if (turnCount === board.length ** 2) {
-      if (tieCheck()) console.log("tie");
+      if (winCheck()) {
+        message = winMessage(lastCell);
+      }
     }
 
-    return lastCell;
+    if (turnCount === board.length ** 2 && !winCheck()) {
+      if (tieCheck()) message = "Tie!";
+    }
+
+    const statusObj = { lastCell, message };
+    return statusObj;
   };
 
   const winTest = () => {
@@ -170,11 +174,16 @@ const GameController = (() => {
     return board;
   };
 
-  return { turn, winTest, tieTest, newGame, turnCount };
+  return { turn, winTest, tieTest, newGame };
 })();
 
 const DOMController = (() => {
   const board = gameBoard.getBoard();
+
+  const gameStatus = (msg) => {
+    const statusMsg = document.querySelector(".messages");
+    statusMsg.textContent = msg;
+  };
 
   const renderBoard = () => {
     const boardSpace = document.querySelector(".board");
@@ -184,7 +193,9 @@ const DOMController = (() => {
         const square = document.createElement("div");
         square.classList.add("square");
         square.addEventListener("click", (e) => {
-          square.textContent = GameController.turn(i, j);
+          let statusObj = GameController.turn(i, j);
+          square.textContent = statusObj.lastCell;
+          gameStatus(statusObj.message);
         });
         boardSpace.appendChild(square);
       });
