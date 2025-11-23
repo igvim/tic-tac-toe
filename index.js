@@ -39,13 +39,13 @@ const GameController = (() => {
 
   const PlayerX = Player("X");
   const PlayerO = Player("O");
-  /*
-  const newGame = () => {
+
+  const reset = () => {
     turnCount = 0;
+    message = "";
     gameBoard.newBoard(3, 3);
-    console.log("new game");
   };
-*/
+
   const winCheck = () => {
     const checkOne = () => {
       const cell = gameBoard.getCell(1, 1);
@@ -141,20 +141,27 @@ const GameController = (() => {
     return statusObj;
   };
 
-  return { turn };
+  return { turn, reset };
 })();
 
 const DOMController = (() => {
   const board = gameBoard.getBoard();
+  const boardSpace = document.querySelector(".board");
+  boardSpace.innerHTML = "";
 
   const gameStatus = (msg) => {
     const statusMsg = document.querySelector(".messages");
     statusMsg.textContent = msg;
   };
 
+  const toggleCellStates = () => {
+    const allSquares = document.querySelectorAll(".square");
+    allSquares.forEach((sq) => {
+      sq.disabled = !sq.disabled;
+    });
+  };
+
   const renderBoard = () => {
-    const boardSpace = document.querySelector(".board");
-    boardSpace.innerHTML = "";
     board.forEach((row, i) => {
       row.forEach((column, j) => {
         const square = document.createElement("button");
@@ -164,10 +171,7 @@ const DOMController = (() => {
           square.textContent = status.lastCell;
           gameStatus(status.message);
           if (status.message) {
-            const allCells = document.querySelectorAll(".square");
-            allCells.forEach((cell) => {
-              cell.disabled = true;
-            });
+            toggleCellStates();
           }
         });
         boardSpace.appendChild(square);
@@ -175,8 +179,17 @@ const DOMController = (() => {
     });
   };
 
-  return { renderBoard };
+  const newGame = () => {
+    const newBtn = document.querySelector(".new");
+    newBtn.addEventListener("click", () => {
+      boardSpace.innerHTML = "";
+      gameStatus("");
+      GameController.reset();
+      renderBoard();
+    });
+  };
+
+  return { renderBoard, newGame };
 })();
 
-gameBoard.newBoard(3, 3);
-DOMController.renderBoard();
+DOMController.newGame();
