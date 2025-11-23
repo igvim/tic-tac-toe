@@ -157,12 +157,18 @@ const DOMController = (() => {
     boardSpace.innerHTML = "";
     board.forEach((row, i) => {
       row.forEach((column, j) => {
-        const square = document.createElement("div");
+        const square = document.createElement("button");
         square.classList.add("square");
         square.addEventListener("click", (e) => {
           let status = GameController.turn(i, j);
           square.textContent = status.lastCell;
           gameStatus(status.message);
+          if (status.message) {
+            const allCells = document.querySelectorAll(".square");
+            allCells.forEach((cell) => {
+              cell.disabled = true;
+            });
+          }
         });
         boardSpace.appendChild(square);
       });
