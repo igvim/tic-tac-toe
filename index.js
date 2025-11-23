@@ -39,19 +39,13 @@ const GameController = (() => {
 
   const PlayerX = Player("X");
   const PlayerO = Player("O");
-
+  /*
   const newGame = () => {
     turnCount = 0;
     gameBoard.newBoard(3, 3);
     console.log("new game");
   };
-
-  const winMessage = (winCell) => {
-    let winString = "";
-    if (winCell) winString = `${winCell} wins!`;
-    return winString;
-  };
-
+*/
   const winCheck = () => {
     const checkOne = () => {
       const cell = gameBoard.getCell(1, 1);
@@ -135,9 +129,7 @@ const GameController = (() => {
     const lastCell = board[i][j];
 
     if (turnCount > 4) {
-      if (winCheck()) {
-        message = winMessage(lastCell);
-      }
+      if (winCheck()) message = `${lastCell} wins!`;
     }
 
     if (turnCount === board.length ** 2 && !winCheck()) {
@@ -148,33 +140,7 @@ const GameController = (() => {
     return statusObj;
   };
 
-  const winTest = () => {
-    newGame();
-    const board = gameBoard.getBoard();
-    turn(0, 0);
-    turn(0, 2);
-    turn(1, 1);
-    turn(1, 0);
-    turn(2, 2);
-    return board;
-  };
-
-  const tieTest = () => {
-    newGame();
-    const board = gameBoard.getBoard();
-    turn(0, 0);
-    turn(0, 2);
-    turn(0, 1);
-    turn(1, 0);
-    turn(1, 2);
-    turn(1, 1);
-    turn(2, 1);
-    turn(2, 2);
-    turn(2, 0);
-    return board;
-  };
-
-  return { turn, winTest, tieTest, newGame };
+  return { turn };
 })();
 
 const DOMController = (() => {
