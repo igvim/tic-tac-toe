@@ -24,8 +24,9 @@ const gameBoard = (() => {
 const GameController = (() => {
   let turnCount = 0;
   let message = "";
+  let players = [];
 
-  const Player = (mark) => {
+  const Player = (name, mark) => {
     const play = (row, column) => {
       const board = gameBoard.getBoard();
       if (board[row][column] === "") {
@@ -34,15 +35,21 @@ const GameController = (() => {
       }
     };
 
-    return { mark, play };
+    return { name, mark, play };
   };
 
-  const PlayerX = Player("X");
-  const PlayerO = Player("O");
+  const createPlayers = (name1, name2) => {
+    const PlayerX = Player(name1, "X");
+    const PlayerO = Player(name2, "O");
+    players.push(PlayerX, PlayerO);
+  };
+
+  const getPlayers = () => players;
 
   const reset = () => {
     turnCount = 0;
     message = "";
+    players = [];
     gameBoard.newBoard(3, 3);
   };
 
@@ -124,13 +131,20 @@ const GameController = (() => {
 
   const turn = (i, j) => {
     const board = gameBoard.getBoard();
+    const players = getPlayers();
+    const PlayerX = players[0];
+    const PlayerO = players[1];
 
     turnCount % 2 == 0 ? PlayerX.play(i, j) : PlayerO.play(i, j);
 
     const lastCell = board[i][j];
 
     if (turnCount > 4) {
-      if (winCheck()) message = `${lastCell} wins!`;
+      if (winCheck()) {
+        lastCell === PlayerX.mark
+          ? (message = `${PlayerX.name} wins!`)
+          : (message = `${PlayerO.name} wins!`);
+      }
     }
 
     if (turnCount === board.length ** 2 && !winCheck()) {
@@ -141,7 +155,7 @@ const GameController = (() => {
     return statusObj;
   };
 
-  return { turn, reset };
+  return { turn, reset, createPlayers };
 })();
 
 const DOMController = (() => {
@@ -182,10 +196,19 @@ const DOMController = (() => {
   const newGame = () => {
     const newBtn = document.querySelector(".new");
     newBtn.addEventListener("click", () => {
-      boardSpace.innerHTML = "";
-      gameStatus("");
-      GameController.reset();
-      renderBoard();
+      const newPlayerForm = document.querySelector("form");
+      newPlayerForm.hidden = false;
+      newPlayerForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const p1Name = document.querySelector("#p1name");
+        const p2Name = document.querySelector("#p2name");
+        boardSpace.innerHTML = "";
+        gameStatus("");
+        GameController.reset();
+        GameController.createPlayers(p1Name.value, p2Name.value);
+        e.currentTarget.hidden = true;
+        renderBoard();
+      });
     });
   };
 
