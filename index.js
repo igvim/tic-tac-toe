@@ -8,7 +8,6 @@ const gameBoard = (() => {
         board[i].push("");
       }
     }
-    return board;
   };
 
   const getBoard = () => board;
